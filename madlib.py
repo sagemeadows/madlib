@@ -51,7 +51,8 @@ Story source: Wikipedia (https://en.wikipedia.org/wiki/Mad_Libs), accessed 5 Jan
     print(madlibs)
 
 # get list of current stories
-filenames = os.listdir()
+path = "./stories/"
+filenames = os.listdir(path)
 list(filenames)
 
 stories = []
@@ -61,7 +62,6 @@ for f in filenames:
         keyword = f.replace('.py', '')
         stories.append(keyword)
 
-stories.remove('madlib')
 ## choose to sort stories alphabetically
 #stories.sort()
 
@@ -104,7 +104,7 @@ if options.select_random == True:
     random.choice(list(stories.values()))()
 elif options.select_story:
     story = options.select_story
-    import_story = 'import {}'.format(story)
+    import_story = 'from stories import {}'.format(story)
     #exec(import_story)
     try:
         exec(import_story)
