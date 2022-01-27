@@ -65,12 +65,12 @@ for f in filenames:
 ## choose to sort stories alphabetically
 #stories.sort()
 
-stories = str(stories)
+stories_help = str(stories)
 
 ## change format of stories in help message
-stories = stories.replace("'", '')
-#stories = stories.replace('[', '')
-#stories = stories.replace(']', '')
+stories_help = stories_help.replace("'", '')
+#stories_help = stories_help.replace('[', '')
+#stories_help = stories_help.replace(']', '')
 
 
 # parse the options
@@ -79,7 +79,7 @@ parser.add_option("-r", "--random",
                   action="store_true", dest="select_random", default=False,
                   help="pick a random story to madlib")
 parser.add_option("-s", "--story", dest="select_story",
-                  help="pick specific story to madlib by name. current stories: {}".format(stories), 
+                  help="pick specific story to madlib by name. current stories: {}".format(stories_help), 
                   metavar="STORY")
 (options, args) = parser.parse_args()
 
@@ -99,15 +99,14 @@ Instructions:
   To see all your madlib options, including the names of current stories: `python3 madlib.py -h`
 """
 
+import_story = 'from stories import {}'
 # compute the constraint (if any)
 if options.select_random == True:
-    random.choice(list(stories.values()))()
+    exec(import_story.format(random.choice(stories)))
 elif options.select_story:
     story = options.select_story
-    import_story = 'from stories import {}'.format(story)
-    #exec(import_story)
     try:
-        exec(import_story)
+        exec(import_story.format(story))
     except ModuleNotFoundError:
         print("\nERROR: Could not find story '{}.py' in current directory".format(story))
         print("  Exiting madlib.py\n")
