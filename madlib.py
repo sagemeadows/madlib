@@ -8,47 +8,11 @@
 # Given user input: replaces words in stories to produces madlibs
 #
 
+import re
 import sys
 import optparse
 import random
 import os
-
-# default story
-def example():
-    madlibs = """
-======================================================
-
-The History of Mad Libs
-
-Mad Libs is a {phrasal} template {word} game. It consists of one {player} prompting others for a list of {words} to substitute for {blanks} in a story before reading aloud. The game is frequently played as a {party} game or as a pastime.
-
-Mad Libs was invented in {_1953} by {Stern} and {Price}. {Stern} and {Price} created the game, but could not agree on a name for their invention. No name was chosen until {five} years later ({_1958}), when {Stern} and {Price} were eating {Eggs_Benedict} at a/n {restaurant} in {NYC}. While eating, the two overheard an argument at a neighboring table between a/n {agent} and a/n {actor}. According to {Price} and {Stern}, during the overheard argument, the {actor} said that they wanted to "ad-lib" an upcoming {interview}. The {agent}, who clearly disagreed with the {actor}'s suggestion, retorted that ad-libbing a/n {interview} would be "mad". {Stern} and {Price} used that eavesdropped conversation to create, at length, the name "Mad Libs". In {_1958}, the duo released the first book of Mad Libs, which resembled the earlier games of Consequences and {Exquisite} Corpse.
-
-~FIN~
-
-======================================================
-
-Story source: Wikipedia (https://en.wikipedia.org/wiki/Mad_Libs), accessed 5 Jan 2022
-"""
-    madlibs = madlibs.format(phrasal=input("[1 of 18] Enter a noun: "), 
-                             word=input("[2 of 18] Enter a noun: "), 
-                             player=input("[3 of 18] Enter a kind of person or occupation: "), 
-                             words=input("[4 of 18] Enter a plural noun: "), 
-                             blanks=input("[5 of 18] Enter a plural noun: "), 
-                             party=input("[6 of 18] Enter a noun: "), 
-                             Stern=input("[7 of 18] Enter a proper name: "), 
-                             Price=input("[8 of 18] Enter a proper name: "), 
-                             _1953=input("[9 of 18] Enter a year: "), 
-                             five=input("[10 of 18] Enter a number: "), 
-                             _1958=input("[11 of 18] Enter the sum of the year and the number: "), 
-                             Eggs_Benedict=input("[12 of 18] Enter a type of food: "), 
-                             restaurant=input("[13 of 18] Enter a kind of business: "), 
-                             NYC=input("[14 of 18] Enter a location (either a name, like 'Australia', or a description, like 'a store' or 'the park'): "), 
-                             agent=input("[15 of 18] Enter a kind of person or occupation: "), 
-                             actor=input("[16 of 18] Enter a kind of person or occupation: "), 
-                             interview=input("[17 of 18] Enter a noun related to talking (e.g. 'conversation'): "), 
-                             Exquisite=input("[18 of 18] Enter an adjective with capitalization: "))
-    print(madlibs)
 
 # get list of current stories
 path = "./stories/"
@@ -99,16 +63,16 @@ Instructions:
   To see all your madlib options, including the names of current stories: `python3 madlib.py -h`
 """
 
-import_story = 'from stories import {}'
+import_story = 'from stories.{} import story'
 # compute the constraint (if any)
 if options.select_random == True:
     exec(import_story.format(random.choice(stories)))
 elif options.select_story:
-    story = options.select_story
+    story_file = options.select_story
     try:
-        exec(import_story.format(story))
+        exec(import_story.format(story_file))
     except ModuleNotFoundError:
-        print("\nERROR: Could not find story '{}.py' in current directory".format(story))
+        print("\nERROR: Could not find story '{}.py'".format(story_file))
         print("  Exiting madlib.py\n")
         sys.exit()
 else:
@@ -116,8 +80,78 @@ else:
     proceed = input("Continue to example? Y/n: ")
     yes = ["", "Y", "y"]
     if proceed in yes:
-        example()
+        exec(import_story.format("example"))
     else:
         print("  Exiting madlib.py\n")
         sys.exit()
+
+# create a list of templates
+pattern = r"\{[-_a-zA-Z0-9]+=[_A-Za-z]+\}"
+regex_program = re.compile(pattern)
+templates = regex_program.findall(story)
+#print(f"DEBUG: templates={templates}")
+#print(len(templates))
+
+# create a list of unique templates (remove duplicates)
+# while maintaining the template order
+uniq_templates = []
+cap_templates = []
+for t in templates:
+    if t.lower() not in uniq_templates:
+        uniq_templates.append(t.lower())
+    if t.lower() != t:
+        cap_templates.append(t)
+#print(f"DEBUG: uniq_templates={uniq_templates}")
+total = len(uniq_templates)
+#print(len(uniq_templates))
+#print(f"DEBUG: cap_templates={cap_templates}")
+
+# create a dictionary of desciptions from the templates where:
+#    key = full template string
+#    value = description string with underscores replaced with spaces
+replacements = {}
+value_pattern = r"\{.*=(.*)\}"
+for ut in uniq_templates:
+    #print(f"DEBUG: uniq_template={ut}")
+    v = re.search(value_pattern, ut)
+    key = ut
+    value = v.group(1)
+    replacements[key] = value
+#print(f"DEBUG: replacements={replacements}")
+
+# for each element of uniq_templates: ask User for replacement phrase
+# (e.g. the 'answer' to the prompt) and add it to a new dictionary
+# using the original template as the key.
+count = 0
+for key in replacements:
+    count += 1
+    exec("from mssgs import {}_mssg".format(replacements[key]))
+    exec("message = '[{} of {}]' + {}_mssg".format(str(count), str(total), replacements[key]))
+    replacements[key] = input(message)
+#print(f"DEBUG: new replacements={replacements}")
+
+# create dictionary for capitalized keys
+# for which the values are the 
+# capitalized values of replacements
+capitals = {}
+for ct in cap_templates:
+    sibling = ct.lower()
+    #v = re.search(value_pattern, replacements[sibling])
+    key = ct
+    value = replacements[sibling][0].upper() + replacements[sibling][1:]
+    capitals[key] = value
+#print(f"DEBUG: capitals={capitals}")
+
+# for each answer: replace template occurrence in original story
+for key in replacements:
+    story = story.replace(key, replacements[key])
+for key in capitals:
+    story = story.replace(key, capitals[key])
+ 
+# print the story
+print(story)
+
+# BONUS Bell or whistle:
+# reformat the paragraphs of the story to have max line length
+# Note: there is a module named 'textwrap' that can help us here
 
