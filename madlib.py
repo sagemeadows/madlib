@@ -13,8 +13,9 @@ import sys
 import optparse
 import random
 import os
+import morph
 
-# get list of current stories
+# Get list of current stories
 path = "./stories/"
 filenames = os.listdir(path)
 list(filenames)
@@ -26,18 +27,18 @@ for f in filenames:
         keyword = f.replace('.py', '')
         stories.append(keyword)
 
-## choose to sort stories alphabetically
+## Choose to sort stories alphabetically
 #stories.sort()
 
 stories_help = str(stories)
 
-## change format of stories in help message
+## Change format of stories in help message
 stories_help = stories_help.replace("'", '')
 #stories_help = stories_help.replace('[', '')
 #stories_help = stories_help.replace(']', '')
 
 
-# parse the options
+# Parse the options
 parser = optparse.OptionParser()
 parser.add_option("-r", "--random",
                   action="store_true", dest="select_random", default=False,
@@ -64,7 +65,7 @@ Instructions:
 """
 
 import_story = 'from stories.{} import story'
-# compute the constraint (if any)
+# Compute the constraint (if any)
 if options.select_random == True:
     exec(import_story.format(random.choice(stories)))
 elif options.select_story:
@@ -85,14 +86,14 @@ else:
         print("  Exiting madlib.py\n")
         sys.exit()
 
-# create a list of templates
+# Create a list of templates
 pattern = r"\{[-_a-zA-Z0-9]+=[_A-Za-z]+\}"
 regex_program = re.compile(pattern)
 templates = regex_program.findall(story)
 #print(f"DEBUG: templates={templates}")
 #print(len(templates))
 
-# create a list of unique templates (remove duplicates)
+# Create a list of unique templates (remove duplicates)
 # while maintaining the template order
 uniq_templates = []
 cap_templates = []
@@ -106,7 +107,7 @@ total = len(uniq_templates)
 #print(len(uniq_templates))
 #print(f"DEBUG: cap_templates={cap_templates}")
 
-# create a dictionary of desciptions from the templates where:
+# Create a dictionary of desciptions from the templates where:
 #    key = full template string
 #    value = description string with underscores replaced with spaces
 replacements = {}
@@ -119,7 +120,7 @@ for ut in uniq_templates:
     replacements[key] = value
 #print(f"DEBUG: replacements={replacements}")
 
-# for each element of uniq_templates: ask User for replacement phrase
+# For each element of uniq_templates: ask User for replacement phrase
 # (e.g. the 'answer' to the prompt) and add it to a new dictionary
 # using the original template as the key.
 count = 0
@@ -130,24 +131,63 @@ for key in replacements:
     replacements[key] = input(message)
 #print(f"DEBUG: new replacements={replacements}")
 
-# create dictionary for capitalized keys
+# Replace unique templates in story
+for key in replacements:
+    story = story.replace(key, replacements[key])
+#print("DEBUG: " + f"{story}")
+
+
+# Get morphologically-complex word templates
+morph_pattern = "\{[-_a-zA-Z0-9]+=[_A-Za-z]+\+[-_a-zA-Z0-9]+\}"
+morph_program = re.compile(morph_pattern)
+morph_templates = morph_program.findall(story)
+#print(f"DEBUG: morphology templates={morph_templates}")
+#print(len(morph_templates))
+
+# Get list of unique morphologically-complex templates
+uniq_morphs = []
+for mt in morph_templates:
+    if mt.lower() not in uniq_morphs:
+        uniq_morphs.append(mt.lower())
+    if mt.lower() != mt:
+        cap_templates.append(mt)
+#print(f"DEBUG: uniq_morphs={uniq_morphs}")
+
+# Dict of morphology functions
+morph_functs = {'pl':morph.pl, 'plural':morph.pl, 
+                'past':morph.past, 'part':morph.part, 
+                'prog':morph.prog, 'pres':morph.pres}
+# Regex pattern for morphologically-complex templates
+morph_value_pattern = r"\{.*=(.*)\+(.*)\}"
+for um in uniq_morphs:
+    v = re.search(morph_value_pattern, um)
+    funct = v.group(2)
+    word = v.group(1)
+    key = um
+    value = morph_functs[funct](word)
+    replacements[key] = value
+#print(f"DEBUG: replacements={replacements}")
+
+# Create dictionary for capitalized keys
 # for which the values are the 
 # capitalized values of replacements
 capitals = {}
 for ct in cap_templates:
     sibling = ct.lower()
-    #v = re.search(value_pattern, replacements[sibling])
     key = ct
     value = replacements[sibling][0].upper() + replacements[sibling][1:]
     capitals[key] = value
 #print(f"DEBUG: capitals={capitals}")
 
-# for each answer: replace template occurrence in original story
+# Second round of template replacement in story
 for key in replacements:
     story = story.replace(key, replacements[key])
 for key in capitals:
     story = story.replace(key, capitals[key])
- 
+
+# TODO: Replace 'a(n)' with 'a' or 'an' appropriately
+
+
 # print the story
 print(story)
 
