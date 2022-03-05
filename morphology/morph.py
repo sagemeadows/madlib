@@ -12,12 +12,13 @@ import sys
 import os
 import re
 
-# Irregular word dictionaries
+# Irregular word .txt file dictionaries
 cwd = os.getcwd()
-nouns_filename = f"{cwd}/irreg_nouns.txt"
-verbs_filename = f"{cwd}/irreg_verbs.txt"
+nouns_filename = f"{cwd}/morphology/irreg_nouns.txt"
+verbs_filename = f"{cwd}/morphology/irreg_verbs.txt"
+artcls_filename = f"{cwd}/morphology/irreg_artcls.txt"
 
-
+# Open files and create python dictionaries
 irreg_nouns = {}
 try:
     file_handle = open(nouns_filename, 'r')
@@ -60,6 +61,23 @@ while True:
     words = line.split()
     irreg_verbs[words[0]] = {'past':words[1], 'part':words[2], 'prog':words[3], 'pres':words[4]}
 #print(f"Irregular verbs: {irreg_verbs}\n")
+
+irreg_artcls = []
+try:
+    file_handle = open(artcls_filename, 'r')
+except:
+    print(f"failed to open words file '{artcls_filename}'")
+    sys.exit()
+
+num_lines = 0
+while True:
+    num_lines += 1
+    line = file_handle.readline()
+    if not line:
+        # at end of file
+        break
+    irreg_artcls.append(line)
+#print(f"Words with irregular articles: {irreg_artcls}\n")
 
 #sys.exit()
 
