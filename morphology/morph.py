@@ -23,7 +23,8 @@ irreg_nouns = {}
 try:
     file_handle = open(nouns_filename, 'r')
 except:
-    print(f"failed to open words file '{nouns_filename}'")
+    print(f" ERROR: Failed to open words file '{nouns_filename}'")
+    print("  Exiting system from morphology/morph.py\n")
     sys.exit()
 
 num_lines = 0
@@ -45,7 +46,8 @@ irreg_verbs = {}
 try:
     file_handle = open(verbs_filename, 'r')
 except:
-    print(f"failed to open words file '{verbs_filename}'")
+    print(f" ERROR: Failed to open words file '{verbs_filename}'")
+    print("  Exiting system from morphology/morph.py\n")
     sys.exit()
 
 num_lines = 0
@@ -66,7 +68,8 @@ irreg_artcls = []
 try:
     file_handle = open(artcls_filename, 'r')
 except:
-    print(f"failed to open words file '{artcls_filename}'")
+    print(f" ERROR: Failed to open words file '{artcls_filename}'")
+    print("  Exiting system from morphology/morph.py\n")
     sys.exit()
 
 num_lines = 0
@@ -76,7 +79,7 @@ while True:
     if not line:
         # at end of file
         break
-    irreg_artcls.append(line)
+    irreg_artcls.append(line[:-1])
 #print(f"Words with irregular articles: {irreg_artcls}\n")
 
 #sys.exit()
@@ -134,7 +137,7 @@ def part(verb):
         past = verb + verb[-1] + 'ed'
         return past
     elif verb.endswith('e'):
-        part = verb[:-1] + 'd'
+        part = verb + 'd'
         return part
     else:
         part = verb + 'ed'
