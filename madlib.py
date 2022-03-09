@@ -133,8 +133,8 @@ for key in replacements:
 #print(f" DEBUG: new replacements={replacements}")
 
 # Replace unique templates in story
-for key in replacements:
-    story = story.replace(key, replacements[key])
+for key,value in replacements.items():
+    story = story.replace(key, value)
 #print(" DEBUG: " + f"{story}")
 
 
@@ -182,10 +182,10 @@ for ct in cap_templates:
 #print(f" DEBUG: capitals={capitals}")
 
 # Second round of template replacement in story
-for key in replacements:
-    story = story.replace(key, replacements[key])
-for key in capitals:
-    story = story.replace(key, capitals[key])
+for key,value in replacements.items():
+    story = story.replace(key, value)
+for key,value in capitals.items():
+    story = story.replace(key, value)
 
 # Replace 'a(n)' with 'a' or 'an' appropriately
 an_pattern = re.compile("a\(n\) [-_a-zA-Z0-9]+")

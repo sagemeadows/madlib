@@ -27,9 +27,7 @@ except:
     print("  Exiting system from morphology/morph.py\n")
     sys.exit()
 
-num_lines = 0
 while True:
-    num_lines += 1
     line = file_handle.readline()
     if not line:
         # at end of file
@@ -50,9 +48,7 @@ except:
     print("  Exiting system from morphology/morph.py\n")
     sys.exit()
 
-num_lines = 0
 while True:
-    num_lines += 1
     line = file_handle.readline()
     if not line:
         # at end of file
@@ -72,9 +68,7 @@ except:
     print("  Exiting system from morphology/morph.py\n")
     sys.exit()
 
-num_lines = 0
 while True:
-    num_lines += 1
     line = file_handle.readline()
     if not line:
         # at end of file
@@ -91,85 +85,67 @@ short_vowel = re.compile("[bcdfghjklmnpqrstvwxyz][aeiou][mpbntdg]$")
 # Morphology functions
 def pl(noun):
     yv = y_vowel.findall(noun)
-    #print(yv)
     if noun in irreg_nouns:
         plural = irreg_nouns[noun]
-        return plural
     elif yv:
         plural = noun[:-1] + 'ies'
-        return plural
     elif noun.endswith(('s', 'z', 'sh', 'ch', 'o')):
         plural = noun + 'es'
-        return plural
     else:
         plural = noun + 's'
-        return plural
+    return plural
 
 def past(verb):
     yv = y_vowel.findall(verb)
     sv = short_vowel.findall(verb)
     if verb in irreg_verbs:
         past = irreg_verbs[verb]['past']
-        return past
     elif yv:
         past = verb[:-1] + 'ied'
-        return past
     elif sv:
         past = verb + verb[-1] + 'ed'
-        return past
     elif verb.endswith('e'):
-        past = verb[:-1] + 'd'
-        return past
+        past = verb + 'd'
     else:
         past = verb + 'ed'
-        return past
+    return past
 
 def part(verb):
     yv = y_vowel.findall(verb)
     sv = short_vowel.findall(verb)
     if verb in irreg_verbs:
         part = irreg_verbs[verb]['part']
-        return part
     elif yv:
         part = verb[:-1] + 'ied'
-        return part
     elif sv:
         past = verb + verb[-1] + 'ed'
-        return past
     elif verb.endswith('e'):
         part = verb + 'd'
-        return part
     else:
         part = verb + 'ed'
-        return part
+    return part
 
 def prog(verb):
     sv = short_vowel.findall(verb)
     if verb in irreg_verbs:
         prog = irreg_verbs[verb]['prog']
-        return prog
     elif verb.endswith('e'):
         prog = verb[:-1] + 'ing'
-        return prog
     elif sv:
         prog = verb + verb[-1] + 'ing'
-        return prog
     else:
         prog = verb + 'ing'
-        return prog
+    return prog
 
 def pres(verb):
     yv = y_vowel.findall(verb)
     if verb in irreg_verbs:
         pres = irreg_verbs[verb]['pres']
-        return pres
     elif yv:
         pres = verb[:-1] + 'ies'
-        return pres
     elif verb.endswith(('s', 'z', 'sh', 'ch', 'o')):
         pres = verb + 'es'
-        return pres
     else:
         pres = verb + 's'
-        return pres
+    return pres
 
