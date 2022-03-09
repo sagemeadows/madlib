@@ -13,7 +13,7 @@ story = """
 
 How to make a 3D {paper=material} {snowflake=noun}
 
-Three dimensional {paper=material} {snowflakes=previous_noun_plural} look {magnificent=adjective} hanging in a window or on a wall. Fun for kids or {adults=plural_person}, they are easy to make. Some like them for {Christmas=holiday}, but you may like them any time!
+Three dimensional {paper=material} {snowflakes={snowflake=noun}+plural} look {magnificent=adjective} hanging in a window or on a wall. Fun for kids or {adults=plural_person}, they are easy to make. Some like them for {Christmas=holiday}, but you may like them any time!
 
 1. Gather the materials. You'll need {six=number} (or {eight=number} for a fuller {snowflake=noun}) pieces of {paper=material}. {White=color} {copy=adjective} {paper=material} will do, although you can use more elaborate types of {paper=material} like {construction=adjective} {paper=material} or {origami=adjective} {paper=material}. You'll also need a(n) {scissors=sharp_noun}, {clear=adjective} {tape=sticky_noun}, and a stapler or some double-sided {tape=sticky_noun}.
 
@@ -31,7 +31,7 @@ Three dimensional {paper=material} {snowflakes=previous_noun_plural} look {magni
 
 8. Repeat Steps 2 to 7 with the remaining pieces of {paper=material}.
 
-9. Join {three=number} of the completed rolled pieces together at one end and staple together using the other hand. Do the other pieces the same way. Now you will have {two=number} pieces consisting of {three=number} strands or "arms" each. (For smaller {snowflakes=previous_noun_plural}, it may be easier to use double-sided {tape=sticky_noun} or {white=color} glue in place of staples.)
+9. Join {three=number} of the completed rolled pieces together at one end and staple together using the other hand. Do the other pieces the same way. Now you will have {two=number} pieces consisting of {three=number} strands or "arms" each. (For smaller {snowflakes={snowflake=noun}+plural}, it may be easier to use double-sided {tape=sticky_noun} or {white=color} glue in place of staples.)
 
 10. Staple the {two=number} new pieces together in the middle.
 
