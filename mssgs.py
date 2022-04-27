@@ -15,6 +15,7 @@ person_mssg = " Enter a kind of person or profession: "
 # noun inputs
 noun_mssg = " Enter a noun: "
 plural_noun_mssg = " Enter a plural noun: "
+pl_noun_mssg = " Enter a plural noun: "
 abstract_noun_mssg = " Enter an abstract noun: "
 mass_noun_mssg = " Enter a mass noun: "
 plural_or_mass_mssg = " Enter a plural or mass noun: "
@@ -31,8 +32,10 @@ plural_sharp_noun_mssg = sharp_noun_mssg[:-2] + plural
 
 # adjective & adverb inputs
 adjective_mssg = " Enter an adjective: "
+adj_mssg = " Enter an adjective: "
 color_mssg = " Enter a color: "
 adverb_mssg = " Enter an adverb: "
+adv_mssg = " Enter an adverb: "
 
 # verb inputs
 verb_i_mssg = " Enter an intransitive verb: "
