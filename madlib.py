@@ -14,6 +14,7 @@ import optparse
 import random
 import os
 import morphology.morph as morph
+from morphology.irregs import irreg_artcls
 
 # Get list of current stories
 path = "./stories/"
@@ -27,12 +28,12 @@ for f in filenames:
         keyword = f.replace('.py', '')
         stories.append(keyword)
 
-## Choose to sort stories alphabetically
-#stories.sort()
+# choose to sort stories alphabetically
+stories.sort()
 
 stories_help = str(stories)
 
-## Change format of stories in help message
+# change format of stories in help message
 stories_help = stories_help.replace("'", '')
 #stories_help = stories_help.replace('[', '')
 #stories_help = stories_help.replace(']', '')
@@ -48,7 +49,7 @@ parser.add_option("-s", "--story", dest="select_story",
                   metavar="STORY")
 (options, args) = parser.parse_args()
 
-# instructions
+# Supply instructions
 instructions = """                        _____ __                 
    ____ ___  ____ _____/ / (_) /_    ____  __  __
   / __ `__ \/ __ `/ __  / / / __ \  / __ \/ / / /
@@ -88,7 +89,7 @@ else:
         sys.exit()
 
 # Create a list of templates
-pattern = r"\{[-_a-zA-Z0-9]+=[_A-Za-z]+\}"
+pattern = r"\{[-_a-zA-Z0-9 ]+=[_A-Za-z]+\}"
 regex_program = re.compile(pattern)
 templates = regex_program.findall(story)
 #print(f" DEBUG: templates={templates}")
@@ -158,7 +159,9 @@ for mt in morph_templates:
 morph_functs = {'pl':morph.pl, 'plural':morph.pl, 
                 'past':morph.past, 'pres':morph.pres, 
                 'prog':morph.prog, 'ing':morph.prog,
-                'part':morph.part, 'perf':morph.part}
+                'part':morph.part, 'perf':morph.part,
+                'er':morph.compar, 'compar':morph.compar,
+                'est':morph.superl, 'superl':morph.superl}
 # Regex pattern for morphologically-complex templates
 morph_value_pattern = r"\{.*=(.*)\+(.*)\}"
 for um in uniq_morphs:
@@ -205,7 +208,7 @@ for combo in uniq_artcl_word_combos:
     # if the following word is an acronym
         if following_word[0] in 'AEFHILMNORSX':
         # if the acronym starts with a letter that starts with a vowel sound
-            if following_word in morph.irreg_artcls:
+            if following_word in irreg_artcls:
             # if the acronym is in morphology/irreg_artcls because it
             # starts with a consonant and is read like a word
                 replacement = 'a ' + following_word
@@ -221,7 +224,7 @@ for combo in uniq_artcl_word_combos:
     
     elif following_word[0] in 'AaEeIiOoUu':
     # if the word is not an acronym and is spelled starting with a vowel
-        if following_word in morph.irreg_artcls:
+        if following_word in irreg_artcls:
         # if the word is in morphology/irreg_artcls.text because it is 
         # pronounced like it starts with a consonant
             replacement = 'a ' + following_word
@@ -233,7 +236,7 @@ for combo in uniq_artcl_word_combos:
     
     else:
     # the word is not an acronym and is spelled starting with a consonant
-        if following_word in morph.irreg_artcls:
+        if following_word in irreg_artcls:
         # if the word is in morphology/irreg_artcls.txt because it 
         # starts with a silent 'h'
             replacement = 'an ' + following_word

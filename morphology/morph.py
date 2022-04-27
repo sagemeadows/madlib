@@ -8,81 +8,16 @@
 # Apply morphology to words
 #
 
-import sys
-import os
 import re
-
-# Irregular word .txt file dictionaries
-cwd = os.getcwd()
-nouns_filename = f"{cwd}/morphology/irreg_nouns.txt"
-verbs_filename = f"{cwd}/morphology/irreg_verbs.txt"
-artcls_filename = f"{cwd}/morphology/irreg_artcls.txt"
-
-# Open files and create python dictionaries
-irreg_nouns = {}
-try:
-    file_handle = open(nouns_filename, 'r')
-except:
-    print(f" ERROR: Failed to open words file '{nouns_filename}'")
-    print("  Exiting system from morphology/morph.py\n")
-    sys.exit()
-
-while True:
-    line = file_handle.readline()
-    if not line:
-        # at end of file
-        break
-    # get rid of dashes
-    line = line.replace('–', '')
-    # split words in line
-    words = line.split()
-    irreg_nouns[words[0]] = words[1]
-#print(f"Irregular nouns: {irreg_nouns}\n")
-
-
-irreg_verbs = {}
-try:
-    file_handle = open(verbs_filename, 'r')
-except:
-    print(f" ERROR: Failed to open words file '{verbs_filename}'")
-    print("  Exiting system from morphology/morph.py\n")
-    sys.exit()
-
-while True:
-    line = file_handle.readline()
-    if not line:
-        # at end of file
-        break
-    # get rid of dashes
-    line = line.replace('–', '')
-    # split words in line
-    words = line.split()
-    irreg_verbs[words[0]] = {'past':words[1], 'part':words[2], 'prog':words[3], 'pres':words[4]}
-#print(f"Irregular verbs: {irreg_verbs}\n")
-
-irreg_artcls = []
-try:
-    file_handle = open(artcls_filename, 'r')
-except:
-    print(f" ERROR: Failed to open words file '{artcls_filename}'")
-    print("  Exiting system from morphology/morph.py\n")
-    sys.exit()
-
-while True:
-    line = file_handle.readline()
-    if not line:
-        # at end of file
-        break
-    irreg_artcls.append(line[:-1])
-#print(f"Words with irregular articles: {irreg_artcls}\n")
-
-#sys.exit()
+from morphology.irregs import irreg_nouns, irreg_verbs
 
 # Spelling rule patterns
 y_vowel = re.compile("[bcdfghjklmnpqrstvwxyz]y$")
 short_vowel = re.compile("[bcdfghjklmnpqrstvwxyz][aeiou][mpbntdg]$")
 
 # Morphology functions
+
+## Noun funct
 def pl(noun):
     yv = y_vowel.findall(noun)
     if noun in irreg_nouns:
@@ -95,6 +30,7 @@ def pl(noun):
         plural = noun + 's'
     return plural
 
+## Verb functions
 def past(verb):
     yv = y_vowel.findall(verb)
     sv = short_vowel.findall(verb)
@@ -148,4 +84,38 @@ def pres(verb):
     else:
         pres = verb + 's'
     return pres
+
+
+## Adjective functions
+irreg_adj_ends = ('ous', 'ic', 'ex', 'ible', 'able')
+
+def compar(adj):
+    yv = y_vowel.findall(adj)
+    sv = short_vowel.findall(adj)
+    if adj.endswith(irreg_adj_ends):
+        superl = 'most ' + adj
+    elif adj.endswith('e'):
+        compar = adj + 'r'
+    elif yv:
+        compar = adj[:-1] + 'ier'
+    elif sv:
+        compar = adj + adj[-1] + 'er'
+    else:
+        compar = adj + 'er'
+    return compar
+
+def superl(adj):
+    yv = y_vowel.findall(adj)
+    sv = short_vowel.findall(adj)
+    if adj.endswith(irreg_adj_ends):
+        superl = 'most ' + adj
+    elif adj.endswith('e'):
+        compar = adj + 'st'
+    elif yv:
+        superl = adj[:-1] + 'iest'
+    elif sv:
+        superl = adj + adj[-1] + 'est'
+    else:
+        superl = adj + 'est'
+    return superl
 
