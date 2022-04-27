@@ -32,6 +32,7 @@ withdraw – withdrew – withdrawn – withdrawing – withdraws
 drink – drank – drunk – drinking – drinks
 drive – drove – driven – driving – drives
 eat – ate – eaten – eating – eats
+edit – edited – edited – editing – edits
 exit – exited – exited – exiting – exits
 fall – fell – fallen – falling – falls
 feed – fed – fed – feeding – feeds
