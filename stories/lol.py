@@ -26,7 +26,7 @@ Sometimes, "{lol=phrase}" is used to convey a(n) {mood=abstract_noun} rather tha
 "{Lol=phrase}" is a {common=adj} response when you’re not sure what else to {say=verb_t}. If the person doesn’t know how to respond to your last {message=noun}, they might just {say=verb_t} this {phrase=noun}.
 
 4. They don’t want to {continue=verb_t} the interaction.
-Sometimes, "{lol=phrase}" signals a lack of {interest=abstract_noun}. If the person you’re {texting={text=verb_t}+ing} uses {one=number}-word responses and doesn’t ask questions or put a lot of {effort=abstract_noun} into chatting with you, they might use "{lol=phrase}" as a way to signal that they’re done {talking={verb_i}+ing}... at least for now.
+Sometimes, "{lol=phrase}" signals a lack of {interest=abstract_noun}. If the person you’re {texting={text=verb_t}+ing} uses {one=number}-word responses and doesn’t ask questions or put a lot of {effort=abstract_noun} into chatting with you, they might use "{lol=phrase}" as a way to signal that they’re done {talking={talk=verb_i}+ing}... at least for now.
 
 How to Reply to "{lol=phrase}"
 1. Reply with {lol=phrase}.
@@ -39,10 +39,10 @@ Refer back to the {message=noun} you sent before they replied with "{lol=phrase}
 Choose one that's related to the conversation, or just pick one you think is {funny=adj}. {Gifs={gif=noun}+pl} and {memes={meme=noun}+pl} are easy ways to bring a(n) {smile=noun} to your {friend=person} or {crush=noun}'s face and are great to use when you don't quite know what to {say=verb_t}.
 
 4. {Change=verb_t} the {subject=noun}.
-If you want to keep chatting with your crush or friend but aren’t sure how to reply, just {change=verb_t} a(n) {new=adj} {subject=noun}. Asking a question is a great way to keep the interaction {going={go=verb_i}+ing}.
+If you want to keep chatting with your {crush=noun} or {friend=person} but aren’t sure how to reply, just {change=verb_t} a(n) {new=adj} {subject=noun}. Asking a question is a great way to keep the interaction {going={go=verb_i}+ing}.
 
 5. Let the interaction {end=verb_i}.
-You don’t have to reply to their message, especially if the person isn’t putting much {effort=abstract_noun} into chatting. Just go about your {day=noun} and {text=verb_t} them again later if you have something to share or want to strike up a new conversation.
+You don’t have to {reply to=verb_t} their {message=noun}, especially if the person isn’t putting much {effort=abstract_noun} into chatting. Just go about your {day=noun} and {text=verb_t} them again later if you have something to share or want to strike up a new conversation.
 
 ~FIN~
 
