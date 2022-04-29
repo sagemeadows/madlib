@@ -93,7 +93,7 @@ def compar(adj):
     yv = y_vowel.findall(adj)
     sv = short_vowel.findall(adj)
     if adj.endswith(irreg_adj_ends):
-        superl = 'most ' + adj
+        compar = 'most ' + adj
     elif adj.endswith('e'):
         compar = adj + 'r'
     elif yv:
@@ -110,7 +110,7 @@ def superl(adj):
     if adj.endswith(irreg_adj_ends):
         superl = 'most ' + adj
     elif adj.endswith('e'):
-        compar = adj + 'st'
+        superl = adj + 'st'
     elif yv:
         superl = adj[:-1] + 'iest'
     elif sv:
