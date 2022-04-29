@@ -140,7 +140,7 @@ for key,value in replacements.items():
 
 
 # Get morphologically-complex word templates
-morph_pattern = "\{[-_a-zA-Z0-9]+=[_A-Za-z]+\+[-_a-zA-Z0-9]+\}"
+morph_pattern = "\{[-_a-zA-Z0-9 ]+=[_A-Za-z ]+\+[-_a-zA-Z0-9]+\}"
 morph_program = re.compile(morph_pattern)
 morph_templates = morph_program.findall(story)
 #print(f"DEBUG: morphology templates={morph_templates}")
