@@ -54,7 +54,7 @@ def part(verb):
     elif yv:
         part = verb[:-1] + 'ied'
     elif sv:
-        past = verb + verb[-1] + 'ed'
+        part = verb + verb[-1] + 'ed'
     elif verb.endswith('e'):
         part = verb + 'd'
     else:
